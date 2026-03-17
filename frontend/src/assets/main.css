@@ -506,6 +506,14 @@ body {
 .notification.success {
     background-color: #4caf50;
 }
+.notification svg {
+    width: 20px;
+    height: 20px;
+    margin: auto 0;
+}
+.notification path {
+    fill: #ececec;
+}
 .notification.error {
     background-color: #f44336;
 }
@@ -520,6 +528,7 @@ body {
     text-align:left;
     margin:auto 0;
     font-size:14px;
+    line-height: 14px;
     font-weight:500;
     color:white !important;
 }
@@ -1339,4 +1348,10 @@ textarea.roles_overlay_ready_instructions {
     resize: none;
     color: var(--tg-theme-text-color) !important;
     font-size: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .markdown_modelName {
+        color: white !important;
+    }
 }

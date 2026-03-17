@@ -26,34 +26,13 @@ export default {
 
         window.Telegram.WebApp.MainButton.text = "Скопировать";
 
-        window.Telegram.WebApp.MainButton.onClick( () => {
-            let markdownBody = document.querySelector('.markdown-body');
-            let textContent = markdownBody.textContent || markdownBody.innerText;
-
-            function copyToClipboard(text) {
-                let textArea = document.createElement('textarea');
-                textArea.value = text;
-
-                document.body.appendChild(textArea);
-                textArea.select();
-                textArea.setSelectionRange(0, 99999);
-
-                document.execCommand('copy');
-                // KatexRender.methods.onCopy();
-
-                document.body.removeChild(textArea);
-
-                notify("Успешно скопировано");
-            }
-
-            copyToClipboard(textContent);
-        })
+        window.Telegram.WebApp.MainButton.onClick(this.onClick)
 
         const params = new URLSearchParams(window.location.search)
         const hashValue = params.get('hash') // Вернёт строку или null, если нет такого параметра
 
-        await axios.post(config.backend + "md/" + hashValue, {
-        // await axios.post(config.backend + "md/" + "aeeb82b5-06c2-4532-bbde-6e1c928071e6", {
+        // await axios.post(config.backend + "md/" + hashValue, {
+        await axios.post(config.backend + "md/" + "aeeb82b5-06c2-4532-bbde-6e1c928071e6", {
             initData: window.Telegram.WebApp.initData,
         }).then((response) => {
             this.html = response.data.text || '';
@@ -108,6 +87,28 @@ export default {
                 el.target = "_blank";
             });
         },
+        onClick () {
+            let markdownBody = document.querySelector('.markdown-body');
+            let textContent = markdownBody.textContent || markdownBody.innerText;
+
+            function copyToClipboard(text) {
+                let textArea = document.createElement('textarea');
+                textArea.value = text;
+
+                document.body.appendChild(textArea);
+                textArea.select();
+                textArea.setSelectionRange(0, 99999);
+
+                document.execCommand('copy');
+                // KatexRender.methods.onCopy();
+
+                document.body.removeChild(textArea);
+
+                notify("Успешно скопировано");
+            }
+
+            copyToClipboard(textContent);
+        }
     }
 }
 </script>
@@ -118,9 +119,23 @@ export default {
     <div class="markdown_modelName">{{ model }}:</div>
     <!--  <div class='markdown-body' v-html="html"></div>-->
     <katex-render class='markdown-body' :text="html"/>
+    <button class="mainButton" @click="onClick">Скопировать</button>
 </template>
 
 <style>
+.mainButton {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95vw;
+    padding: 18px 0;
+    background-color: #6bd1c4;
+    color: white !important;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+}
 .loading {
     position: fixed;
     top: 0; left: 0;
