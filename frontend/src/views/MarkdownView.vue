@@ -168,6 +168,9 @@ export default {
 }
 
 /* dark */
+.markdown-body {
+    padding-bottom: 70px;
+}
 .markdown-body.dark {
     padding:20px;
     padding-top: 10px;
