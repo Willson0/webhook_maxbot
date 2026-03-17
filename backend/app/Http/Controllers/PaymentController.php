@@ -120,15 +120,15 @@ class PaymentController extends Controller
                                 . "Код ответа от сайта: $responseStatus\n\n"
                                 . "$responseText";
 
-                            if ($tg)
-                                Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
-                                    'chat_id' => $adminChatId,
-                                    'text'    => $text,
-                                ]);
-                            else
-                                Http::post("https://platform-api.max.ru/messages?user_id=$adminChatId", [
-                                    'text'    => $text,
-                                ])->withHeader("Authorization", $botToken);
+//                            if ($tg)
+//                                Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+//                                    'chat_id' => $adminChatId,
+//                                    'text'    => $text,
+//                                ]);
+//                            else
+//                                Http::post("https://platform-api.max.ru/messages?user_id=$adminChatId", [
+//                                    'text'    => $text,
+//                                ])->withHeader("Authorization", $botToken);
                         } catch (\Exception $e) {
                             Log::error("Ошибка при отправке сообщения в Telegram: {$e->getMessage()}");
                         }
@@ -228,7 +228,7 @@ class PaymentController extends Controller
             if ($tg)
                 Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", $data);
             else
-                Http::post("https://platform-api.max.ru/messages?user_id=$user->id", [
+                Http::post("https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id", [
                     'text'    => $text,
                     "format"  => "html"
                 ])->withHeader("Authorization", $botToken);
