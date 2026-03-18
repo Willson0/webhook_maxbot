@@ -190,7 +190,9 @@ class PaymentController extends Controller
                     'text'    => $text,
                     "format"  => "html"
                 ])->withHeader("Authorization", $botToken);
-                Log::critical($resp);
+                try {
+                    Log::critical($resp->json());
+                } catch (Exception $e) {}
             }
         } else if (($request->event === "payment.canceled" || $request->status === "canceled") && $payment->is_autopayment) {
             $user = User::find($payment->user_id);
