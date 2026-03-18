@@ -192,7 +192,7 @@ class PaymentController extends Controller
                 ])->withHeader("Authorization", $botToken);
                 try {
                     $data = json_decode($resp->getBody()->getContents(), true);
-                    Log::debug("JSON: https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id\n$botToken\n$text\nResponse: " . $data);
+                    Log::debug("Response: " . json_encode($data, JSON_UNESCAPED_UNICODE));
                 } catch (Exception $e) {
                     Log::critical($e->getMessage());
                 }
