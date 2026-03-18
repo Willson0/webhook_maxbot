@@ -193,7 +193,9 @@ class PaymentController extends Controller
                 try {
                     $data = json_decode($resp->getBody()->getContents(), true);
                     Log::debug("JSON: https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id\n$botToken\n$text\nResponse: " . $data);
-                } catch (Exception $e) {}
+                } catch (Exception $e) {
+                    Log::critical($e->getMessage());
+                }
             }
         } else if (($request->event === "payment.canceled" || $request->status === "canceled") && $payment->is_autopayment) {
             $user = User::find($payment->user_id);
