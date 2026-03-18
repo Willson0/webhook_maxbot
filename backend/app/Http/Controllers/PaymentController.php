@@ -96,48 +96,6 @@ class PaymentController extends Controller
                     $user->tariff_time = Carbon::now()->addDays($payment->days)->timestamp;
                     $user->orig_tariff = $payment->sub . "_0";
                     $user->start_sub_time = Carbon::now()->timestamp;
-
-                    $target = "userBoughtSubscription";
-                    if ($payment->rub_summ == 1 || $payment->rub_summ == '1') $target = "userBoughtTrialSubscription";
-
-                    $tgTrackToken = env('TG_TRACK_TOKEN');
-                    $adminChatId = config('price.adminChat');
-                    $botToken = env('TELEGRAM_BOT_TOKEN');
-
-                    try {
-                        $response = Http::post("https://bot-api.tgtrack.ru/v1/$tgTrackToken/send_reach_goal", [
-                            'user_id' => (string)$user->id,
-                            'target' => $target,
-                        ]);
-                        $responseText = $response->body();
-                        $responseStatus = $response->status();
-
-                        try {
-                            $text =
-                                "Событие достижения цели\n\n"
-                                . "User ID: $user->id\n"
-                                . "Событие: $target\n"
-                                . "Код ответа от сайта: $responseStatus\n\n"
-                                . "$responseText";
-
-//                            if ($tg)
-//                                Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
-//                                    'chat_id' => $adminChatId,
-//                                    'text'    => $text,
-//                                ]);
-//                            else
-//                                Http::post("https://platform-api.max.ru/messages?user_id=$adminChatId", [
-//                                    'text'    => $text,
-//                                ])->withHeader("Authorization", $botToken);
-                        } catch (\Exception $e) {
-                            Log::error("Ошибка при отправке сообщения в Telegram: {$e->getMessage()}");
-                        }
-                        if ($responseStatus != 200) {
-                            Log::info("TGTRACK ERROR: $responseStatus - $responseText");
-                        }
-                    } catch (\Exception $e) {
-                        Log::error("Ошибка при обращении к TGTrack: {$e->getMessage()}");
-                    }
                 } else {
                     try {
                         $dayTries = Stats::firstOrCreate(
@@ -227,11 +185,13 @@ class PaymentController extends Controller
 
             if ($tg)
                 Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", $data);
-            else
-                Http::post("https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id", [
+            else {
+                $resp = Http::post("https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id", [
                     'text'    => $text,
                     "format"  => "html"
                 ])->withHeader("Authorization", $botToken);
+                Log::critical($resp);
+            }
         } else if (($request->event === "payment.canceled" || $request->status === "canceled") && $payment->is_autopayment) {
             $user = User::find($payment->user_id);
             $user->tariff = "free";
