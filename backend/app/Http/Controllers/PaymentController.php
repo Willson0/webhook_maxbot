@@ -186,10 +186,12 @@ class PaymentController extends Controller
             if ($tg)
                 Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", $data);
             else {
-                $resp = Http::post("https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id", [
+                $resp = Http::withHeaders([
+                    'Authorization' => $botToken
+                ])->post("https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id", [
                     'text'    => $text,
                     "format"  => "html"
-                ])->withHeader("Authorization", $botToken);
+                ]);
                 try {
                     $data = json_decode($resp->getBody()->getContents(), true);
                     Log::debug("Response: " . json_encode($data, JSON_UNESCAPED_UNICODE));
