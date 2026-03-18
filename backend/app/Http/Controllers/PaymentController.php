@@ -191,7 +191,7 @@ class PaymentController extends Controller
                     "format"  => "html"
                 ])->withHeader("Authorization", $botToken);
                 try {
-                    Log::debug("JSON: https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id\n$botToken");
+                    Log::debug("JSON: https://platform-api.max.ru/messages?user_id=$user->id&chat_id=$user->chat_id\n$botToken\n$text\nResponse: " . json_encode($resp));
                 } catch (Exception $e) {}
             }
         } else if (($request->event === "payment.canceled" || $request->status === "canceled") && $payment->is_autopayment) {
