@@ -31,8 +31,8 @@ export default {
         const params = new URLSearchParams(window.location.search)
         const hashValue = params.get('hash') // Вернёт строку или null, если нет такого параметра
 
-        // await axios.post(config.backend + "md/" + hashValue, {
-        await axios.post(config.backend + "md/" + "aeeb82b5-06c2-4532-bbde-6e1c928071e6", {
+        await axios.post(config.backend + "md/" + hashValue, {
+        // await axios.post(config.backend + "md/" + "aeeb82b5-06c2-4532-bbde-6e1c928071e6", {
             initData: window.Telegram.WebApp.initData,
         }).then((response) => {
             this.html = response.data.text || '';
