@@ -22,7 +22,7 @@ export default {
         let theme = darkMode ? 'dark' : 'light';
 
         document.querySelector(".markdown-body").classList.add(theme);
-        if (darkMode) document.body.style.backgroundColor = "#0d1117";
+        if (darkMode) document.body.style.backgroundColor = "#17181C";
 
         window.Telegram.WebApp.MainButton.text = "Скопировать";
 
@@ -130,7 +130,7 @@ export default {
     transform: translateX(-50%);
     width: 95vw;
     padding: 18px 0;
-    background-color: #6bd1c4;
+    background-color: #007AFF;
     color: white !important;
     border-radius: 8px;
     font-size: 17px;
