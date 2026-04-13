@@ -15,25 +15,25 @@ export default {
     },
     components: {KatexRender},
     async mounted () {
-        window.Telegram.WebApp.expand();
-        window.Telegram.WebApp.disableVerticalSwipes();
-
-        const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        let theme = darkMode ? 'dark' : 'light';
-
-        document.querySelector(".markdown-body").classList.add(theme);
-        if (darkMode) document.body.style.backgroundColor = "#17181C";
-
-        window.Telegram.WebApp.MainButton.text = "Скопировать";
-
-        window.Telegram.WebApp.MainButton.onClick(this.onClick)
+        // window.Telegram.WebApp.expand();
+        // window.Telegram.WebApp.disableVerticalSwipes();
+        //
+        // const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        // let theme = darkMode ? 'dark' : 'light';
+        //
+        // document.querySelector(".markdown-body").classList.add(theme);
+        // if (darkMode) document.body.style.backgroundColor = "#17181C";
+        //
+        // window.Telegram.WebApp.MainButton.text = "Скопировать";
+        //
+        // window.Telegram.WebApp.MainButton.onClick(this.onClick)
 
         const params = new URLSearchParams(window.location.search)
         const hashValue = params.get('hash') // Вернёт строку или null, если нет такого параметра
 
         await axios.post(config.backend + "md/" + hashValue, {
         // await axios.post(config.backend + "md/" + "aeeb82b5-06c2-4532-bbde-6e1c928071e6", {
-            initData: window.Telegram.WebApp.initData,
+        //     initData: window.Telegram.WebApp.initData,
         }).then((response) => {
             this.html = response.data.text || '';
             this.model = response.data?.sources?.[0] || '';
@@ -177,7 +177,7 @@ export default {
     color-scheme: dark;
     margin: 0;
     color: #f0f6fc;
-    background-color: #0d1117;
+    background-color: #17181C;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
     font-size: 16px;
     line-height: 1.5;
